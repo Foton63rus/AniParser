@@ -1,0 +1,35 @@
+﻿<Window x:Class="AniParser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AniParser"
+        mc:Ignorable="d"
+        Title="AniParser" Height="415" Width="464">
+    <Grid>
+        <ComboBox x:Name="cbTmp" HorizontalAlignment="Left" Margin="16,137,0,0" VerticalAlignment="Top" Width="429" SelectionChanged="CbTmp_SelectionChanged"/>
+        <TextBox x:Name="fileIndexes" HorizontalAlignment="Left" Margin="16,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="256"/>
+        <Button Content="Путь" HorizontalAlignment="Left" Margin="284,41,0,0" VerticalAlignment="Top" Width="53" Click="getPathToFileTSNIndexes"/>
+        <Label Content="Файл коэффициентов пересчета" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="212"/>
+        <Label Content="c" HorizontalAlignment="Left" Margin="16,79,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbPageFrom" HorizontalAlignment="Left" Margin="37,83,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="39" KeyUp="tbPageFrom_KeyUp"/>
+        <Label Content="по" HorizontalAlignment="Left" Margin="91,79,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbPageTo" HorizontalAlignment="Left" Margin="120,83,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="39" KeyUp="tbPageTo_KeyUp"/>
+        <Label Content="стр." HorizontalAlignment="Left" Margin="164,79,0,0" VerticalAlignment="Top"/>
+        <Button Content="Извлечь данные" HorizontalAlignment="Left" Margin="350,41,0,0" VerticalAlignment="Top" Background="#FFC1EFB0" Click="parse"/>
+        <TextBox x:Name="tbRegex" HorizontalAlignment="Left" Margin="16,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="429"/>
+        <Label Content="Regex" HorizontalAlignment="Left" Margin="16,164,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.132,-0.076"/>
+        <Label Content="Тип таблицы" HorizontalAlignment="Left" Margin="16,110,0,0" VerticalAlignment="Top"/>
+        <Button Content="Preview" HorizontalAlignment="Left" Margin="350,82,0,0" VerticalAlignment="Top" Click="preview"/>
+        <Button Content="Test" HorizontalAlignment="Left" Margin="406,82,0,0" VerticalAlignment="Top" Click="Test"/>
+        <RichTextBox x:Name="tbConsole" VerticalScrollBarVisibility="Visible" Margin="16,229,19,10" FontFamily="Franklin Gothic Medium">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Label Content="Console" HorizontalAlignment="Left" Margin="18,208,0,0" VerticalAlignment="Top"/>
+        <Button Content="Clear" HorizontalAlignment="Left" Margin="75,209,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+    </Grid>
+</Window>
