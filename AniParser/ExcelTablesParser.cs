@@ -10,7 +10,6 @@ namespace AniParser
         static Excel.Application _excel = new Excel.Application();
         static Excel.Workbook _wb;
         static Excel.Worksheet _ws;
-        static Excel.Range selectedRange;
 
         static Excel.Range RangeCode;
         static Excel.Range RangeWorksStart;
@@ -52,43 +51,32 @@ namespace AniParser
         {
             _wb = _excel.Workbooks.Open(path);
             _ws = (Excel.Worksheet)_wb.ActiveSheet;
-            Debug.WriteLine($"{_wb.Name} is opened");
             _ws.Range["A1"].Select();
         }
 
         private static void findRangeCode()
         {
             RangeCode = _ws.Cells.Find("Код");
-            Debug.WriteLine(getRangeInfo(RangeCode));
+            //Debug.WriteLine(getRangeInfo(RangeCode));
         }
         private static void findRangeWorksStart()
         {
-            RangeCode.Select();
-            _excel.ActiveCell.Offset[1, 1].Select();
-            RangeWorksStart = _excel.Selection as Excel.Range;
-            Debug.WriteLine(getRangeInfo(RangeWorksStart));
+            RangeWorksStart = RangeCode.Offset[1, 1];
+            //Debug.WriteLine(getRangeInfo(RangeWorksStart));
         }
         private static void findRangeWorksEnd()
         {
-            RangeWorksStart.Select();
-            _excel.ActiveCell.get_End(XlDirection.xlDown).Select();
-            RangeWorksEnd = _excel.Selection as Excel.Range;
-            Debug.WriteLine(getRangeInfo(RangeWorksEnd));
+            RangeWorksEnd = RangeWorksStart.get_End(XlDirection.xlDown);
+            //Debug.WriteLine(getRangeInfo(RangeWorksEnd));
         }
         private static void findDimension()
         {
-            RangeWorksStart.Select();
-            _excel.ActiveCell.Offset[0, 1].Select();
-            RangeDimensionStart = _excel.Selection as Excel.Range;
-            Debug.WriteLine(getRangeInfo(RangeDimensionStart));
+            RangeDimensionStart = RangeWorksStart.Offset[0, 1];
+            //Debug.WriteLine(getRangeInfo(RangeDimensionStart));
         }
         private static void findRangeClassStart()
         {
-            RangeDimensionStart.Select();
-            _excel.ActiveCell.Offset[0, 1].Select();
-            selectedRange = _excel.Selection as Excel.Range;
-            _excel.ActiveCell.Offset[-1, 0].Select();
-            RangeClassStart = _excel.Selection as Excel.Range;
+            RangeClassStart = RangeDimensionStart.Offset[0, 1].Offset[-1, 0];
         }
 
         static void dataCollection()
@@ -96,7 +84,7 @@ namespace AniParser
             sb = new StringBuilder();
             sb.AppendLine(RangeCode.Offset[-1, 0].Value); // забираем строку измерение перед таблицей
             collectClassByRows(RangeClassStart);
-            Debug.WriteLine(sb.ToString()) ;
+            Debug.WriteLine(sb.ToString());
         }
 
         private static void collectClassByRows(Range range) 
@@ -105,10 +93,10 @@ namespace AniParser
             RangeClassCurrent.Select();
             if (RangeClassCurrent[1].Value == null) return;
             string razdel = RangeClassCurrent[1].Value.ToString("MM-d-yy");
-            Debug.WriteLine($"{razdel}");
+            //Debug.WriteLine($"{razdel}");
 
             getClassHeadersInLine("");
-            Debug.WriteLine($"{currentHeader}");
+            //Debug.WriteLine($"{currentHeader}");
 
             for (int i = RangeWorksStart.Row; i <= RangeWorksEnd.Row; i++)
             {
