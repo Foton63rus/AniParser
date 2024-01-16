@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using UglyToad.PdfPig;
+using AniParser.Entity;
+using AniParser.Entity.TSN;
 
 namespace AniParser
 {
@@ -18,6 +18,8 @@ namespace AniParser
         string pathJson = "tsn_regex.json";
         int pageFrom = 1;
         int pageTo = 1;
+
+        TSNCompilationExtractor tSNCompilationExtractor = new TSNCompilationExtractor();
 
         Dictionary<string, string> regexTmp = new Dictionary<string, string>();
         public MainWindow()
@@ -47,33 +49,9 @@ namespace AniParser
 
         private void parse(object sender, RoutedEventArgs e)
         {
-            if (path == "")
-            {
-                MessageBox.Show("Укажи путь до файла с индексами");
-                return;
-            }
-            try
-            {
-                PdfDocument pdf = PdfDocument.Open(path);
-                StringBuilder sb = new StringBuilder();
-                for (int i = pageFrom; i <= pageTo; i++)
-                {
-                    Regex regex = new Regex(tbRegex.Text);
-                    MatchCollection matches = regex.Matches(pdf.GetPage(i).Text);
-
-                    foreach (Match match in matches)
-                    {
-                        sb.Append(match.Value);
-                        sb.Append(Environment.NewLine);
-                    }
-                    File.WriteAllText(pathOut, sb.ToString());
-                }
-                MessageBox.Show($"Результат записан в {pathOut}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            PDFTablesOfIndexesParser pDFTablesOfIndexesParser = new PDFTablesOfIndexesParser();
+            string output = pDFTablesOfIndexesParser.Parse( path, tbRegex.Text, pageFrom, pageTo );
+            File.WriteAllText(pathOut, output );
         }
 
         private void preview(object sender, RoutedEventArgs e)
@@ -158,29 +136,17 @@ namespace AniParser
             tbRegex.Text = regexTmp[cbTmp.SelectedItem.ToString()];
         }
 
-        private void Test(object sender, RoutedEventArgs e)
+        private void TSNTablesParse(object sender, RoutedEventArgs e)
         {
-            ExcelTablesParser.Parse(path);
-        }
-
-        void openWithOpenXML(string path)
-        {
-            //if (File.Exists(path))
-            //{
-            //    using (SpreadsheetDocument document = SpreadsheetDocument.Open(path, false))
-            //    {
-            //        WorkbookPart workbookPart = document.WorkbookPart;
-            //        IEnumerable<Sheet> sheets = document.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
-
-            //        Sheet sheet = sheets.First();
-            //        var a = sheet;
-
-            //        WorkbookPart wbPart = document.WorkbookPart;
-            //        WorksheetPart wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
-            //        Cell theCell = wsPart.Worksheet.Descendants<Cell>().Where(c => c.CellReference == "A200").FirstOrDefault();
-            //        MessageBox.Show($" {theCell.CellReference} {theCell.CellValue.InnerText}");
-            //    }
-            //}
+            //ExcelTablesParser.Parse(path);
+            try
+            {
+                tSNCompilationExtractor.Parse(path);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"error: {ex.Message} {ex.StackTrace}");
+            }
         }
 
         private void ConsoleWriteLine(string str)
@@ -192,7 +158,7 @@ namespace AniParser
             tbConsole.Document.Blocks.Clear();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnConsoleClear(object sender, RoutedEventArgs e)
         {
             ConsoleClear();
         }
