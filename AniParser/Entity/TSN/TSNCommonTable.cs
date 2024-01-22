@@ -13,23 +13,24 @@ namespace AniParser.Entity
         public string table_name;
         public string table_quantity;
         public string table_uom;
-        public List<TSNCommonTableRecord> Records = new List<TSNCommonTableRecord>();
+        public object table_conditions = null;
+        public List<Paragraph> paragraphs = new List<Paragraph>();
 
         private string measurePattern = @"^.*Измеритель:\s*(\d+)\s+(.+)";
 
-        public void AddRecord( TSNCommonTableRecord newRecord)
+        public void AddParagraph( Paragraph newParagraph)
         {
-            Records.Add(newRecord);
+            paragraphs.Add(newParagraph);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (TSNCommonTableRecord record in Records)
+            foreach (Paragraph record in paragraphs)
             {
                 sb.Append($"\n>  {record}");
             }
-            return $"TSNCommonTable: name:{table_name} [{Records.Count}]{{{sb.ToString()}}}";
+            return $"TSNCommonTable: name:{table_name} [{paragraphs.Count}]{{{sb.ToString()}}}";
         }
 
         public TSNCommonTable(string name, string raw_measure) 

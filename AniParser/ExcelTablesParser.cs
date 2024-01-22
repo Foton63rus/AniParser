@@ -23,7 +23,6 @@ namespace AniParser
         static string currentHeader;
 
         static TSNCommonTable currentTSNCommonTable;
-        static TSNCommonTableRecord currentTSNCommonTableRecord;
 
         public static void Init(Excel.Application excel, Excel.Worksheet ws)
         {
@@ -82,35 +81,36 @@ namespace AniParser
 
         private static void collectClassByRows(Range range) 
         {
+            Paragraph paragraph = new Paragraph();
+
             RangeClassCurrent = range;
             RangeClassCurrent.Select();
             if (RangeClassCurrent[1].Value == null) return;
-            string recordType;
+            string paragraphName;
             try
             {
-                recordType = RangeClassCurrent[1].Value.ToString("MM-d-yy");
+                paragraph.paragraph_name = RangeClassCurrent[1].Value.ToString("MM-d-yy");
             }
             catch (Exception e)
             {
-                recordType = RangeClassCurrent[1].Value.ToString();
+                paragraph.paragraph_name = RangeClassCurrent[1].Value.ToString();
             }
             List<string> currentHeaderList = new List<string>();
             getClassHeadersInLine(currentHeaderList, "");
             currentHeaderList.Reverse();
-
+            paragraph.paragraph_conditions = currentHeaderList;
+            
             for (int i = RangeWorksStart.Row; i <= RangeWorksEnd.Row; i++)
             {
-                currentTSNCommonTableRecord = new TSNCommonTableRecord();
+                Expense newExpense = new Expense();
+                //currentTSNCommonTableRecord.Code = $"{_ws.Cells[i, RangeCode.Column].Value}".Replace(Environment.NewLine, " ").Replace("\n", " ");
+                newExpense.expense_name = _ws.Cells[i, RangeWorksStart.Column].Value.ToString().Replace(Environment.NewLine, " ").Replace("\n", " ");
+                newExpense.expense_uom = $"{_ws.Cells[i, RangeDimensionStart.Column].Value}";
+                newExpense.expense_value = $"{_ws.Cells[i, RangeClassCurrent.Column].Value}";
 
-                currentTSNCommonTableRecord.RecordType = recordType;
-                currentTSNCommonTableRecord.Header = currentHeaderList;
-                currentTSNCommonTableRecord.Code = $"{_ws.Cells[i, RangeCode.Column].Value}".Replace(Environment.NewLine, " ").Replace("\n", " ");
-                currentTSNCommonTableRecord.Work = _ws.Cells[i, RangeWorksStart.Column].Value.ToString().Replace(Environment.NewLine, " ").Replace("\n", " ");
-                currentTSNCommonTableRecord.Dimension = $"{_ws.Cells[i, RangeDimensionStart.Column].Value}";
-                currentTSNCommonTableRecord.Value = $"{_ws.Cells[i, RangeClassCurrent.Column].Value}";
-
-                currentTSNCommonTable.AddRecord(currentTSNCommonTableRecord);
+                paragraph.expenses.Add(newExpense);
             }
+            currentTSNCommonTable.AddParagraph(paragraph);
             collectClassByRows(RangeClassCurrent.Offset[0, 1]);
         }
 

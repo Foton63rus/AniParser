@@ -95,13 +95,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Debug.cs" />
+    <Compile Include="Entity\TSN\Expense.cs" />
     <Compile Include="Entity\TSN\Section.cs" />
     <Compile Include="Entity\TSN\Compilation.cs" />
     <Compile Include="Entity\TSN\Branch.cs" />
     <Compile Include="Entity\TSN\Table.cs" />
     <Compile Include="Entity\TSN\TSNCompilationExtractor.cs" />
-    <Compile Include="Entity\TSNCommonTable.cs" />
-    <Compile Include="Entity\TSNCommonTableRecord.cs" />
+    <Compile Include="Entity\TSN\TSNCommonTable.cs" />
+    <Compile Include="Entity\TSN\Paragraph.cs" />
     <Compile Include="ExcelTablesParser.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
