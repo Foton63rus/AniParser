@@ -8,6 +8,7 @@ using System.Windows.Input;
 using UglyToad.PdfPig;
 using AniParser.Entity;
 using AniParser.Entity.TSN;
+using System.Threading.Tasks;
 
 namespace AniParser
 {
@@ -45,6 +46,11 @@ namespace AniParser
                 pathOut = a[0] + "_parse.csv";
                 fileIndexes.Text = path;
             }
+        }
+
+        private void excelPrepare(object sender, RoutedEventArgs e)
+        {
+            tSNCompilationExtractor.preProcessor(path);
         }
 
         private void parse(object sender, RoutedEventArgs e)

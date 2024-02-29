@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,11 +15,20 @@ namespace AniParser.Entity
         public object table_conditions = null;
         public List<Paragraph> paragraphs = new List<Paragraph>();
 
-        private string measurePattern = @"^.*Измеритель:\s*(\d+)\s+(.+)";
-
         public void AddParagraph( Paragraph newParagraph)
         {
             paragraphs.Add(newParagraph);
+        }
+
+        public void Merge(TSNCommonTable mergedTable)
+        {
+            if (mergedTable.paragraphs.Count > 0 && mergedTable != null)
+            {
+                foreach (Paragraph paragraph in mergedTable.paragraphs)
+                {
+                    AddParagraph(paragraph);
+                }
+            }
         }
 
         public override string ToString()
@@ -38,7 +46,7 @@ namespace AniParser.Entity
             table_name = name;
             if (raw_measure != null)
             {
-                Match match = Regex.Match(raw_measure, measurePattern, RegexOptions.IgnoreCase);
+                Match match = Regex.Match(raw_measure, TSNRegexPatterns.MeasurePattern, RegexOptions.IgnoreCase);
                 this.table_quantity = match.Groups[1].Value;
                 this.table_uom = match.Groups[2].Value;
             }

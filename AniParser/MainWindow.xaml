@@ -31,5 +31,7 @@
         </RichTextBox>
         <Label Content="Console" HorizontalAlignment="Left" Margin="18,208,0,0" VerticalAlignment="Top"/>
         <Button Content="Clear" HorizontalAlignment="Left" Margin="75,209,0,0" VerticalAlignment="Top" Click="btnConsoleClear"/>
+        <Button Content="Cook" HorizontalAlignment="Left" Margin="284,16,0,0" VerticalAlignment="Top" Width="53" Click="excelPrepare"/>
+        <Separator HorizontalAlignment="Left" Height="3" Margin="0,71,0,0" VerticalAlignment="Top" Width="483"/>
     </Grid>
 </Window>

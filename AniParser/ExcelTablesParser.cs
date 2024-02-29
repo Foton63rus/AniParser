@@ -4,7 +4,6 @@ using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace AniParser

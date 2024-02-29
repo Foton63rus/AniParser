@@ -95,6 +95,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Debug.cs" />
+    <Compile Include="Entity\ContinuationOfTablesSearcher.cs" />
+    <Compile Include="Entity\TSNRegexPatterns.cs" />
     <Compile Include="Entity\TSN\Expense.cs" />
     <Compile Include="Entity\TSN\Section.cs" />
     <Compile Include="Entity\TSN\Compilation.cs" />
